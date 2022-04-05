@@ -50,6 +50,17 @@ const reducers = (state = initState, action) => {
         return {
             ...state,
             pos: action.pos,
+        };
+        case 8: // 8 = change colour of positionchange tile in wordpos word.
+        return {
+            ...state,
+            colour: action.colour,
+            positionchange: action.positionchange,
+        };
+        case 9: // 9 = tell website whether to update colours now or not.
+        return {
+            ...state,
+            update: action.update
         }
         default:
             return state;

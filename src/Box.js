@@ -5,10 +5,32 @@ class Box extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      input: ""
+      input: "",
+      colour: {
+        "backgroundColor":"#111111"
+      },
+      prev: "B"
     }
     this.handleChange = this.handleChange.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
+  }
+
+  componentDidUpdate() {
+    const {colour, positionchange, wordpos, pos, wordposition, update} = this.props;
+    const {prev} = this.state;
+    if (wordpos === wordposition && pos === positionchange && update) {
+      console.log(pos);
+      console.log(prev);
+      console.log(colour);
+      if (colour === "G" && prev !== colour) {
+        this.setState({colour:{"backgroundColor":"green"},prev:"G"});
+      } else if (colour === "Y" && prev !== colour) {
+        this.setState({colour:{"backgroundColor":"orange"},prev:"Y"});
+      } else if (prev !== colour) {
+        console.log('reset to black' + pos)
+        this.setState({colour:{"backgroundColor":"#111111"},prev:"B"});
+      }
+    }
   }
 
   handleChange(event) {
@@ -18,7 +40,7 @@ class Box extends Component {
     } else {
       var arrwords = [this.props.word0, this.props.word1, this.props.word2, this.props.word3, this.props.word4];
       var newwords = arrwords[wordpos];
-      if (newwords[pos] != "") {
+      if (newwords[pos] !== "") {
         event.preventDefault();
         return;
       }
@@ -26,7 +48,7 @@ class Box extends Component {
       this.setState({input:temp.toUpperCase()});
       newwords[pos] = temp.toUpperCase();
       this.props.dispatch({type:wordpos,word:newwords});
-      if (position === 4) {
+      if (position === 5) {
         return;
       }
       this.props.dispatch({type:7, pos:position+1});
@@ -35,7 +57,7 @@ class Box extends Component {
 
   onKeyDown(event) {
     const {wordpos, pos, position} = this.props;
-    this.props.dispatch({type:5,input:event.keyCode});
+    this.props.dispatch({type:5,input:event.keyCode}); // check for backspace
     if (event.keyCode === 8) {
       this.setState({input:""});
       var arrwords = [this.props.word0, this.props.word1, this.props.word2, this.props.word3, this.props.word4];
@@ -54,10 +76,11 @@ class Box extends Component {
   }
 
   render(){
+    const {colour} = this.state;
     return (
       <input type="text" className="box" maxLength="1" 
       onChange={this.handleChange} value={this.state.input}
-      onKeyDown={this.onKeyDown}>
+      onKeyDown={this.onKeyDown} style={colour}>
       </input>
     )
   }
@@ -72,7 +95,10 @@ const mapStateToProps = state => {
     word4: state.word4,
     input: state.input,
     wordposition: state.wordpos,
-    position: state.pos
+    position: state.pos,
+    colour: state.colour,
+    positionchange: state.positionchange,
+    update: state.update
   }
 }
 
