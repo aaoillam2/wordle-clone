@@ -11,7 +11,7 @@ class MainBody extends Component {
     var word = "";
     var size = Object.keys(data).length;
     word = data[Math.floor(Math.random() * size) + 1];
-    console.log(word);
+    //console.log(word);
     this.props.dispatch({type:9, update:false});
     this.state = {
       finalword:word,
@@ -34,7 +34,7 @@ class MainBody extends Component {
         axios.get(url)
         .catch(function (error) {
           if (error.response) {
-            console.log(error.response);
+            //console.log(error.response);
             skip = true;
           }
         })
@@ -44,7 +44,7 @@ class MainBody extends Component {
               this.props.dispatch({type:9,update:true});
               for (let i = 0; i < 5; i++) {
                 if (words[wordpos][i].toUpperCase() === finalword[i].toUpperCase()){
-                  console.log("setting " + i + "'th letter to green")
+                  //console.log("setting " + i + "'th letter to green")
                   this.props.dispatch({type:8,colour:"G",positionchange:i});
                   //send packets to change ith square of wordpos into green
                 } else if (finalword.includes(words[wordpos][i].toLowerCase())) {
@@ -59,7 +59,7 @@ class MainBody extends Component {
             }
             this.updateGuess();
           } else {
-            console.log("skipped")
+            //console.log("skipped")
           }
         })
       } 
