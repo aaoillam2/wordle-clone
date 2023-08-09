@@ -14,8 +14,8 @@ class App extends Component {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <div className="container">
-            <Header></Header>
-            <MainBody></MainBody>
+            <Header/>
+            <MainBody/>
           </div>
         </PersistGate>
       </Provider>

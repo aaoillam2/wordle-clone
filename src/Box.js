@@ -19,9 +19,6 @@ class Box extends Component {
     const {colour, positionchange, wordpos, pos, wordposition, update} = this.props;
     const {prev} = this.state;
     if (wordpos === wordposition && pos === positionchange && update) {
-      console.log(pos);
-      console.log(prev);
-      console.log(colour);
       if (colour === "G" && prev !== colour) {
         this.setState({colour:{"backgroundColor":"green"},prev:"G"});
       } else if (colour === "Y" && prev !== colour) {

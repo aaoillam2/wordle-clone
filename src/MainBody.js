@@ -19,6 +19,15 @@ class MainBody extends Component {
     }
   }
 
+  findFirstInstance(arr, element) {
+    for (let i = 0; i < arr.length; i++) {
+      if (element == arr[i]) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
   componentDidUpdate() {
     const {input, wordpos, pos, word0, word1, word2, word3, word4} = this.props;
     const {finalword} = this.state
@@ -42,13 +51,17 @@ class MainBody extends Component {
           if (!skip) {
             if (!this.checkLose()){
               this.props.dispatch({type:9,update:true});
+              let used = [false, false, false, false, false];
               for (let i = 0; i < 5; i++) {
-                if (words[wordpos][i].toUpperCase() === finalword[i].toUpperCase()){
+                let found_wordpos = this.findFirstInstance(finalword,(words[wordpos][i].toLowerCase()));
+                if (found_wordpos == i) {
                   //console.log("setting " + i + "'th letter to green")
                   this.props.dispatch({type:8,colour:"G",positionchange:i});
+                  used[i] = true;
                   //send packets to change ith square of wordpos into green
-                } else if (finalword.includes(words[wordpos][i].toLowerCase())) {
+                } else if (found_wordpos != -1 && used[found_wordpos] == false) {
                   this.props.dispatch({type:8,colour:"Y",positionchange:i});
+                  used[found_wordpos] = true;
                   //send packets to change ith square of wordpos into yellow
                 } else {
                   //ignore / send packets to change ith square of wordpos into grey/black.
