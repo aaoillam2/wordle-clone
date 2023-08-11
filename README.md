@@ -19,4 +19,3 @@ After 5 letters are stored, and the user clicks enter, it checks with a dictiona
 
 * Add a keyboard at the bottom to indicate which characters were inputted by the user.<br/>
 * Rework it from an input text box to divs, and listen for user input<br/>
-* Handle correctly what happens if the user types a word with two of one character.
