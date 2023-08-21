@@ -6,7 +6,8 @@ const initState = {
     word4: ["","","","",""],
     input: "",
     wordpos: 0,
-    pos: 0
+    pos: 0,
+    letter: null
 }
 
 const reducers = (state = initState, action) => {
@@ -57,10 +58,11 @@ const reducers = (state = initState, action) => {
             colour: action.colour,
             positionchange: action.positionchange,
         };
-        case 9: // 9 = tell website whether to update colours now or not.
+        case 9: // 9 = change letter of positionchange tile in wordpos word.
         return {
             ...state,
-            update: action.update
+            letter: action.letter,
+            positionchange: action.positionchange
         }
         default:
             return state;

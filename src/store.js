@@ -12,7 +12,9 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, reducer);
 
-const store = createStore(persistedReducer, applyMiddleware(logger));
+//const store = createStore(persistedReducer, applyMiddleware(logger));
+
+const store = createStore(persistedReducer, applyMiddleware());
 
 const persistor = persistStore(store);
 

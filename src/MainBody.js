@@ -12,77 +12,43 @@ class MainBody extends Component {
     var size = Object.keys(data).length;
     word = data[Math.floor(Math.random() * size) + 1];
     //console.log(word);
-    this.props.dispatch({type:9, update:false});
     this.state = {
       finalword:word,
-      win:false
+      win:false,
+      input:null,
+      wordpos:0,
+      word0:null,
+      word1:null,
+      word2:null,
+      word3:null,
+      word4:null,
+      gameEnded:false
     }
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
   findFirstInstance(arr, element) {
     for (let i = 0; i < arr.length; i++) {
-      if (element == arr[i]) {
+      if (element.toLowerCase() == arr[i]) {
         return i;
       }
     }
     return -1;
   }
 
-  componentDidUpdate() {
-    const {input, wordpos, pos, word0, word1, word2, word3, word4} = this.props;
-    const {finalword} = this.state
-    var skip = false;
-    if (pos !== 5) {
-      return;
-    }
-    if (input === 13) { // this checks for enter being hit
-      var url = "https://api.dictionaryapi.dev/api/v2/entries/en/";
-      var words = [word0, word1, word2, word3, word4];
-      if (!this.checkIfEmpty(words, wordpos)) {
-        url += words[wordpos][0] + words[wordpos][1] + words[wordpos][2] + words[wordpos][3] + words[wordpos][4];
-        axios.get(url)
-        .catch(function (error) {
-          if (error.response) {
-            //console.log(error.response);
-            skip = true;
-          }
-        })
-        .then((res)=>{
-          if (!skip) {
-            if (!this.checkLose()){
-              this.props.dispatch({type:9,update:true});
-              let used = [false, false, false, false, false];
-              for (let i = 0; i < 5; i++) {
-                let found_wordpos = this.findFirstInstance(finalword,(words[wordpos][i].toLowerCase()));
-                if (found_wordpos == i) {
-                  //console.log("setting " + i + "'th letter to green")
-                  this.props.dispatch({type:8,colour:"G",positionchange:i});
-                  used[i] = true;
-                  //send packets to change ith square of wordpos into green
-                } else if (found_wordpos != -1 && used[found_wordpos] == false) {
-                  this.props.dispatch({type:8,colour:"Y",positionchange:i});
-                  used[found_wordpos] = true;
-                  //send packets to change ith square of wordpos into yellow
-                } else {
-                  //ignore / send packets to change ith square of wordpos into grey/black.
-                  this.props.dispatch({type:8,colour:"B",positionchange:i});
-                }
-              }
-              this.props.dispatch({type:9,update:false});
-            }
-            this.updateGuess();
-          } else {
-            //console.log("skipped")
-          }
-        })
-      } 
-    }
+  componentDidMount() {
+    //this.myRef.current.focus();
+    document.addEventListener("keydown", this.handleKeyDown);
   }
 
-  checkIfEmpty(words, j) {
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.handleKeyDown);
+  }
+
+  checkIfEmpty(words) {
     var bool = false;
     for (let i = 0; i < 5; i++) {
-      if (words[j][i] == "") {
+      if (words[i] === null) {
         bool = true;
       }
     }
@@ -101,9 +67,139 @@ class MainBody extends Component {
 
   updateGuess(){
     const {wordpos} = this.props;
-    this.myRef.current.children[wordpos+1].children[0].focus();
+    //this.myRef.current.children[wordpos+1].children[0].focus();
+    this.props.dispatch({type:9,word:null,positionchange:-1});
+    this.props.dispatch({type:8,color:"B",positionchange:-1});
     this.props.dispatch({type:6,wordpos:wordpos+1});
     this.props.dispatch({type:7,pos:0});
+    this.setState({
+      word0:null,
+      word1:null,
+      word2:null,
+      word3:null,
+      word4:null
+    })
+  }
+
+  handleKeyDown = event => {
+    const {wordpos} = this.props;
+    const {gameEnded, word0, word1, word2, word3, word4, finalword} = this.state;
+    this.setState({
+      input:event.key,
+    })
+    
+    let skip = false;
+
+    if (gameEnded) {
+      return;
+    }
+
+    if ((event.keyCode >= 65 && event.keyCode <= 90) || (event.keyCode >= 97 && event.keyCode <= 122)) {
+      if (word0 == null) {
+        this.setState({
+          word0:event.key.toUpperCase()
+        })
+        this.props.dispatch({type:9, letter:event.key.toUpperCase(),positionchange:0});
+      } else if (word1 == null) {
+        this.setState({
+          word1:event.key.toUpperCase()
+        })
+        this.props.dispatch({type:9, letter:event.key.toUpperCase(),positionchange:1});
+      } else if (word2 == null) {
+        this.setState({
+          word2:event.key.toUpperCase()
+        })
+        this.props.dispatch({type:9, letter:event.key.toUpperCase(),positionchange:2});
+      } else if (word3 == null) {
+        this.setState({
+          word3:event.key.toUpperCase()
+        })
+        this.props.dispatch({type:9, letter:event.key.toUpperCase(),positionchange:3});
+      } else if (word4 == null) {
+        this.setState({
+          word4:event.key.toUpperCase()
+        })
+        this.props.dispatch({type:9, letter:event.key.toUpperCase(),positionchange:4});
+      }
+    } else if (event.keyCode == 8) {
+      if (word4 != null) {
+        this.setState({
+          word4:null
+        })
+        this.props.dispatch({type:9, letter:null, positionchange:4});
+      } else if (word3 != null) {
+        this.setState({
+          word3:null
+        })
+        this.props.dispatch({type:9, letter:null, positionchange:3});
+      } else if (word2 != null) {
+        this.setState({
+          word2:null
+        })
+        this.props.dispatch({type:9, letter:null, positionchange:2});
+      } else if (word1 != null) {
+        this.setState({
+          word1:null
+        })
+        this.props.dispatch({type:9, letter:null, positionchange:1});
+      } else if (word0 != null) {
+        this.setState({
+          word0:null
+        })
+        this.props.dispatch({type:9, letter:null, positionchange:0});
+      }
+    } else if (event.keyCode == 13) {
+      var url = "https://api.dictionaryapi.dev/api/v2/entries/en/";
+      var words = [word0, word1, word2, word3, word4];
+      if (!this.checkIfEmpty(words)) {
+        url += words[0] + words[1] + words[2] + words[3] + words[4];
+        axios.get(url)
+        .catch(function (error) {
+          if (error.response) {
+            //console.log(error.response);
+            skip = true;
+          }
+        })
+        .then((res)=>{
+          if (!skip) {
+            if (!this.checkLose()){
+              let used = [false, false, false, false, false];
+              let failed = false;
+              for (let i = 0; i < 5; i++) {
+                let found_wordpos = this.findFirstInstance(finalword,words[i]);
+                if (found_wordpos == i) {
+                  //console.log("setting " + i + "'th letter to green")
+                  this.props.dispatch({type:8,colour:"G",positionchange:i});
+                  used[i] = true;
+                  //send packets to change ith square of wordpos into green
+                } else if (found_wordpos != -1 && used[found_wordpos] == false) {
+                  this.props.dispatch({type:8,colour:"Y",positionchange:i});
+                  used[found_wordpos] = true;
+                  failed = true;
+                  //send packets to change ith square of wordpos into yellow
+                } else {
+                  //ignore / send packets to change ith square of wordpos into grey/black.
+                  this.props.dispatch({type:8,colour:"B",positionchange:i});
+                  failed = true;
+                }
+              }
+
+              if (!failed) {
+                this.setState({
+                  gameEnded:true
+                })
+              }
+              
+              this.props.dispatch({type:wordpos,word:words});
+
+              this.updateGuess();
+            }
+          } else {
+            //console.log("skipped")
+          }
+        })
+      }
+    }
   }
 
   render(){
@@ -121,14 +217,7 @@ class MainBody extends Component {
 
 const mapStateToProps = state => {
   return {
-    word0: state.word0,
-    word1: state.word1,
-    word2: state.word2,
-    word3: state.word3,
-    word4: state.word4,
-    input: state.input,
-    wordpos: state.wordpos,
-    pos: state.pos
+    wordpos:state.wordpos
   }
 }
 
