@@ -100,26 +100,31 @@ class MainBody extends Component {
           word0:event.key.toUpperCase()
         })
         this.props.dispatch({type:9, letter:event.key.toUpperCase(),positionchange:0});
+        this.props.dispatch({type:10, whiteletterpos:1,whitewordpos:wordpos});
       } else if (word1 == null) {
         this.setState({
           word1:event.key.toUpperCase()
         })
         this.props.dispatch({type:9, letter:event.key.toUpperCase(),positionchange:1});
+        this.props.dispatch({type:10, whiteletterpos:2,whitewordpos:wordpos});
       } else if (word2 == null) {
         this.setState({
           word2:event.key.toUpperCase()
         })
         this.props.dispatch({type:9, letter:event.key.toUpperCase(),positionchange:2});
+        this.props.dispatch({type:10, whiteletterpos:3,whitewordpos:wordpos});
       } else if (word3 == null) {
         this.setState({
           word3:event.key.toUpperCase()
         })
         this.props.dispatch({type:9, letter:event.key.toUpperCase(),positionchange:3});
+        this.props.dispatch({type:10, whiteletterpos:4,whitewordpos:wordpos});
       } else if (word4 == null) {
         this.setState({
           word4:event.key.toUpperCase()
         })
         this.props.dispatch({type:9, letter:event.key.toUpperCase(),positionchange:4});
+        this.props.dispatch({type:10, whiteletterpos:0,whitewordpos:-1});
       }
     } else if (event.keyCode == 8) {
       if (word4 != null) {
@@ -127,26 +132,31 @@ class MainBody extends Component {
           word4:null
         })
         this.props.dispatch({type:9, letter:null, positionchange:4});
+        this.props.dispatch({type:10, whiteletterpos:4,whitewordpos:wordpos});
       } else if (word3 != null) {
         this.setState({
           word3:null
         })
         this.props.dispatch({type:9, letter:null, positionchange:3});
+        this.props.dispatch({type:10, whiteletterpos:3,whitewordpos:wordpos});
       } else if (word2 != null) {
         this.setState({
           word2:null
         })
         this.props.dispatch({type:9, letter:null, positionchange:2});
+        this.props.dispatch({type:10, whiteletterpos:2,whitewordpos:wordpos});
       } else if (word1 != null) {
         this.setState({
           word1:null
         })
         this.props.dispatch({type:9, letter:null, positionchange:1});
+        this.props.dispatch({type:10, whiteletterpos:1,whitewordpos:wordpos});
       } else if (word0 != null) {
         this.setState({
           word0:null
         })
         this.props.dispatch({type:9, letter:null, positionchange:0});
+        this.props.dispatch({type:10, whiteletterpos:0,whitewordpos:wordpos});
       }
     } else if (event.keyCode == 13) {
       var url = "https://api.dictionaryapi.dev/api/v2/entries/en/";

@@ -17,8 +17,18 @@ class Box extends Component {
     // this.onKeyDown = this.onKeyDown.bind(this);
   }
 
+  componentDidMount() {
+    const {wordpos, whitewordpos, pos, whiteletterpos} = this.props;
+    if (wordpos === whitewordpos && pos === whiteletterpos) {
+      this.myRef.current.style.border = "1px solid white";
+    } else {
+      this.myRef.current.style.border = "1px solid rgba(150, 150, 150, 0.6)";
+    }
+  }
+
   componentDidUpdate() {
-    const {colour, positionchange, wordpos, pos, wordposition, letter} = this.props;
+    const {colour, positionchange, wordpos, pos, wordposition, letter, whiteletterpos, whitewordpos} = this.props;
+
     const {prev} = this.state;
     if (wordpos === wordposition && pos === positionchange) {
       //console.log(this.myRef.current);
@@ -36,7 +46,13 @@ class Box extends Component {
         } else {
           this.myRef.current.innerHTML = null;
         }
-      }
+      } 
+    }
+
+    if (wordpos === whitewordpos && pos === whiteletterpos) {
+      this.myRef.current.style.border = "1px solid white";
+    } else {
+      this.myRef.current.style.border = "1px solid rgba(150, 150, 150, 0.6)";
     }
   }
 
@@ -61,7 +77,9 @@ const mapStateToProps = state => {
     position: state.pos,
     colour: state.colour,
     positionchange: state.positionchange,
-    letter: state.letter
+    letter: state.letter,
+    whiteletterpos: state.whiteletterpos,
+    whitewordpos: state.whitewordpos
   }
 }
 

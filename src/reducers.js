@@ -7,7 +7,9 @@ const initState = {
     input: "",
     wordpos: 0,
     pos: 0,
-    letter: null
+    letter: null,
+    whiteletterpos: 0,
+    whitewordpos: 0
 }
 
 const reducers = (state = initState, action) => {
@@ -63,6 +65,12 @@ const reducers = (state = initState, action) => {
             ...state,
             letter: action.letter,
             positionchange: action.positionchange
+        };
+        case 10: // 10 = position of white box.
+        return {
+            ...state,
+            whiteletterpos: action.whiteletterpos,
+            whitewordpos: action.whitewordpos
         }
         default:
             return state;
