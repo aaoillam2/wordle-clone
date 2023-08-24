@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import MainBody from './MainBody';
 import Header from './Header';
+import Keyboard from './Keyboard';
 import { store, persistor } from "./store";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
@@ -16,6 +17,7 @@ class App extends Component {
           <div className="container">
             <Header/>
             <MainBody/>
+            <Keyboard/>
           </div>
         </PersistGate>
       </Provider>
