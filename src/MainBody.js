@@ -180,16 +180,19 @@ class MainBody extends Component {
                 if (found_wordpos == i) {
                   //console.log("setting " + i + "'th letter to green")
                   this.props.dispatch({type:8,colour:"G",positionchange:i});
+                  this.props.dispatch({type:13, greenWords:words[i]});
                   used[i] = true;
                   //send packets to change ith square of wordpos into green
                 } else if (found_wordpos != -1 && used[found_wordpos] == false) {
                   this.props.dispatch({type:8,colour:"Y",positionchange:i});
+                  this.props.dispatch({type:12, yellowWords:words[i]});
                   used[found_wordpos] = true;
                   failed = true;
                   //send packets to change ith square of wordpos into yellow
                 } else {
                   //ignore / send packets to change ith square of wordpos into grey/black.
                   this.props.dispatch({type:8,colour:"B",positionchange:i});
+                  this.props.dispatch({type:11,badWords:words[i]});
                   failed = true;
                 }
               }

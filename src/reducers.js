@@ -9,7 +9,10 @@ const initState = {
     pos: 0,
     letter: null,
     whiteletterpos: 0,
-    whitewordpos: 0
+    whitewordpos: 0,
+    badWords: [],
+    yellowWords: [],
+    greenWords: []
 }
 
 const reducers = (state = initState, action) => {
@@ -20,58 +23,85 @@ const reducers = (state = initState, action) => {
                 word0:action.word,
             };
         case 1: // 1 = change word1.
-        return {
-            ...state,
-            word1:action.word,
-        };
+            return {
+                ...state,
+                word1:action.word,
+            };
         case 2: // 2 = change word2.
-        return {
-            ...state,
-            word2:action.word,
-        };
+            return {
+                ...state,
+                word2:action.word,
+            };
         case 3: // 3 = change word3.
-        return {
-            ...state,
-            word3:action.word,
-        };
+            return {
+                ...state,
+                word3:action.word,
+            };
         case 4: // 4 = change word4.
-        return {
-            ...state,
-            word4:action.word,
-        };
+            return {
+                ...state,
+                word4:action.word,
+            };
         case 5: // 5 = change current input.
-        return { 
-            ...state,
-            input:action.input,
-        };
+            return { 
+                ...state,
+                input:action.input,
+            };
         case 6: // 6 = change wordpos.
-        return {
-            ...state,
-            wordpos: action.wordpos,
-        };
+            return {
+                ...state,
+                wordpos: action.wordpos,
+            };
         case 7: // 7 = change pos.
-        return {
-            ...state,
-            pos: action.pos,
-        };
+            return {
+                ...state,
+                pos: action.pos,
+            };
         case 8: // 8 = change colour of positionchange tile in wordpos word.
-        return {
-            ...state,
-            colour: action.colour,
-            positionchange: action.positionchange,
-        };
+            return {
+                ...state,
+                colour: action.colour,
+                positionchange: action.positionchange,
+            };
         case 9: // 9 = change letter of positionchange tile in wordpos word.
-        return {
-            ...state,
-            letter: action.letter,
-            positionchange: action.positionchange
-        };
+            return {
+                ...state,
+                letter: action.letter,
+                positionchange: action.positionchange
+            };
         case 10: // 10 = position of white box.
-        return {
-            ...state,
-            whiteletterpos: action.whiteletterpos,
-            whitewordpos: action.whitewordpos
-        }
+            return {
+                ...state,
+                whiteletterpos: action.whiteletterpos,
+                whitewordpos: action.whitewordpos
+            };
+        case 11: // 11 = add letter to bad_words
+            let badWords = state.badWords;
+            if (!badWords.includes(action.badWords)) {
+                badWords.push(action.badWords);
+            }
+            return {
+                ...state,
+                badWords: badWords
+            }
+        case 12: // 12 = add letter to yellow_words
+            let yellowWords = state.yellowWords;
+            if (!yellowWords.includes(action.yellowWords)) {
+                yellowWords.push(action.yellowWords);
+            }
+            return {
+                ...state,
+                yellowWords: yellowWords
+            }
+        case 13: // 13 = add letter to green_words
+            let greenWords = state.greenWords;
+            if (!greenWords.includes(action.greenWords)) {
+                greenWords.push(action.greenWords);
+            }
+            return {
+                ...state,
+                greenWords: greenWords
+            }
         default:
             return state;
     }
