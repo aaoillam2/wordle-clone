@@ -10,14 +10,6 @@ class Key extends Component {
 
   componentDidUpdate() {
     const {badWords, yellowWords, greenWords, id} = this.props;
-
-    // console.log(word0);
-
-    // console.log("test");
-
-    // console.log(badWords);
-    // console.log(id);
-
     if (greenWords.includes(id)) {
       this.myRef.current.style.backgroundColor = "green";
     } else if (yellowWords.includes(id)) {

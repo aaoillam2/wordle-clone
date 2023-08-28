@@ -52,6 +52,9 @@
   font-size:40px;
   caret-color: transparent;
   font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content: center;
 }
 
 .keyboard{

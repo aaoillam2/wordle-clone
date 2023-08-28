@@ -27,9 +27,9 @@ class MainBody extends Component {
     this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
-  findFirstInstance(arr, element) {
+  findFirstInstance(arr, element, ignore_arr) {
     for (let i = 0; i < arr.length; i++) {
-      if (element.toLowerCase() == arr[i]) {
+      if (element.toLowerCase() == arr[i] && ignore_arr[i] == false) {
         return i;
       }
     }
@@ -37,7 +37,6 @@ class MainBody extends Component {
   }
 
   componentDidMount() {
-    //this.myRef.current.focus();
     document.addEventListener("keydown", this.handleKeyDown);
   }
 
@@ -57,7 +56,7 @@ class MainBody extends Component {
 
   checkLose(){
     const {wordpos} = this.props;
-    if (wordpos === 4) {
+    if (wordpos >= 5) {
       console.log("YOU SUCK");
       return true;
     } else {
@@ -174,26 +173,34 @@ class MainBody extends Component {
           if (!skip) {
             if (!this.checkLose()){
               let used = [false, false, false, false, false];
+              let user_used = [false, false, false, false];
               let failed = false;
+              // search for green, then yellow, then fill all remaining slots with black.
               for (let i = 0; i < 5; i++) {
-                let found_wordpos = this.findFirstInstance(finalword,words[i]);
-                if (found_wordpos == i) {
-                  //console.log("setting " + i + "'th letter to green")
-                  this.props.dispatch({type:8,colour:"G",positionchange:i});
+                if (words[i].toLowerCase() == finalword[i]) {
+                  this.props.dispatch({type:8, colour:"G", positionchange:i});
                   this.props.dispatch({type:13, greenWords:words[i]});
                   used[i] = true;
-                  //send packets to change ith square of wordpos into green
-                } else if (found_wordpos != -1 && used[found_wordpos] == false) {
-                  this.props.dispatch({type:8,colour:"Y",positionchange:i});
-                  this.props.dispatch({type:12, yellowWords:words[i]});
-                  used[found_wordpos] = true;
-                  failed = true;
-                  //send packets to change ith square of wordpos into yellow
-                } else {
-                  //ignore / send packets to change ith square of wordpos into grey/black.
-                  this.props.dispatch({type:8,colour:"B",positionchange:i});
-                  this.props.dispatch({type:11,badWords:words[i]});
-                  failed = true;
+                  user_used[i] = true;
+                }
+              }
+
+              // now search for yellow & black.
+              for (let i = 0; i < 5; i++) {
+                if (user_used[i] != true) {
+                  let found_wordpos = this.findFirstInstance(finalword, words[i], used);
+                  if (found_wordpos != -1) {
+                    this.props.dispatch({type:8, colour:"Y", positionchange:i});
+                    this.props.dispatch({type:12, yellowWords:words[i]});
+                    used[found_wordpos] = true;
+                    failed = true;
+                    user_used[i] = true;
+                  } else {
+                    this.props.dispatch({type:8, colour:"B",positionchange:i});
+                    this.props.dispatch({type:11,badWords:words[i]});
+                    failed = true;
+                    user_used[i] = true;
+                  }
                 }
               }
 
@@ -206,6 +213,10 @@ class MainBody extends Component {
               this.props.dispatch({type:wordpos,word:words});
 
               this.updateGuess();
+            } else {
+              this.setState({
+                gameEnded:true
+              })
             }
           } else {
             //console.log("skipped")
