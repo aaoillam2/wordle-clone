@@ -71,6 +71,7 @@ class MainBody extends Component {
     this.props.dispatch({type:8,color:"B",positionchange:-1});
     this.props.dispatch({type:6,wordpos:wordpos+1});
     this.props.dispatch({type:7,pos:0});
+    this.props.dispatch({type:10,whiteletterpos:0,whitewordpos:wordpos+1});
     this.setState({
       word0:null,
       word1:null,
