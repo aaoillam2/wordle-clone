@@ -44,6 +44,22 @@ class MainBody extends Component {
     document.removeEventListener("keydown", this.handleKeyDown);
   }
 
+  componentDidUpdate() {
+    const {newletter} = this.props;
+    let event = "";
+    if (newletter == null) {
+      return;
+    } else if (newletter == "ENTER") {
+      event = new KeyboardEvent('keydown', {'keyCode':13});
+    } else if (newletter == "⌫") {
+      event = new KeyboardEvent('keydown', {'keyCode':8});
+    } else {
+      event = new KeyboardEvent('keydown', {'keyCode':newletter.charCodeAt(0),'key':newletter});
+    }
+    this.handleKeyDown(event);
+    this.props.dispatch({type:20,newletter:null});
+  }
+
   checkIfEmpty(words) {
     var bool = false;
     for (let i = 0; i < 5; i++) {
@@ -170,7 +186,7 @@ class MainBody extends Component {
             skip = true;
           }
         })
-        .then((res)=>{
+        .then(async (res)=>{
           if (!skip) {
             if (!this.checkLose()){
               let used = [false, false, false, false, false];
@@ -181,6 +197,7 @@ class MainBody extends Component {
                 if (words[i].toLowerCase() == finalword[i]) {
                   this.props.dispatch({type:8, colour:"G", positionchange:i});
                   this.props.dispatch({type:13, greenWords:words[i]});
+                  await new Promise(r => setTimeout(r, 100));
                   used[i] = true;
                   user_used[i] = true;
                 }
@@ -193,12 +210,14 @@ class MainBody extends Component {
                   if (found_wordpos != -1) {
                     this.props.dispatch({type:8, colour:"Y", positionchange:i});
                     this.props.dispatch({type:12, yellowWords:words[i]});
+                    await new Promise(r => setTimeout(r, 100));
                     used[found_wordpos] = true;
                     failed = true;
                     user_used[i] = true;
                   } else {
                     this.props.dispatch({type:8, colour:"B",positionchange:i});
                     this.props.dispatch({type:11,badWords:words[i]});
+                    await new Promise(r => setTimeout(r, 100));
                     failed = true;
                     user_used[i] = true;
                   }
@@ -242,7 +261,8 @@ class MainBody extends Component {
 
 const mapStateToProps = state => {
   return {
-    wordpos:state.wordpos
+    wordpos:state.wordpos,
+    newletter:state.newletter
   }
 }
 

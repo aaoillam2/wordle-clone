@@ -12,7 +12,8 @@ const initState = {
     whitewordpos: 0,
     badWords: [],
     yellowWords: [],
-    greenWords: []
+    greenWords: [],
+    newletter: null
 }
 
 const reducers = (state = initState, action) => {
@@ -101,6 +102,11 @@ const reducers = (state = initState, action) => {
             return {
                 ...state,
                 greenWords: greenWords
+            }
+        case 20:
+            return {
+                ...state,
+                newletter: action.newletter
             }
         default:
             return state;
