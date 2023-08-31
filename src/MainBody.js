@@ -180,7 +180,7 @@ class MainBody extends Component {
       if (!this.checkIfEmpty(words)) {
         url += words[0] + words[1] + words[2] + words[3] + words[4];
         axios.get(url)
-        .catch(function (error) {
+        .catch(function async (error) {
           if (error.response) {
             //console.log(error.response);
             skip = true;
@@ -239,6 +239,9 @@ class MainBody extends Component {
               })
             }
           } else {
+            this.props.dispatch({type:21, failedGuess:true});
+            await new Promise(r => setTimeout(r, 700));
+            this.props.dispatch({type:21, failedGuess:false});
             //console.log("skipped")
           }
         })

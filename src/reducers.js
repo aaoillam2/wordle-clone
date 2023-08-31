@@ -108,6 +108,11 @@ const reducers = (state = initState, action) => {
                 ...state,
                 newletter: action.newletter
             }
+        case 21:
+            return {
+                ...state,
+                failedGuess: action.failedGuess
+            }
         default:
             return state;
     }

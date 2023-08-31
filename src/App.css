@@ -98,3 +98,17 @@
 #ENTER {
   min-width:12%;
 }
+
+
+.textoverlay {
+  position:absolute;
+  z-index:1;
+  height:100%;
+  width:100%;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  color:rgba(255,255,255,1.0);
+  font-size:36px;
+  background-color:rgba(0,0,0,0.6);
+}
