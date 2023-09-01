@@ -73,7 +73,6 @@ class MainBody extends Component {
   checkLose(){
     const {wordpos} = this.props;
     if (wordpos >= 5) {
-      console.log("YOU SUCK");
       return true;
     } else {
       return false;
@@ -200,7 +199,13 @@ class MainBody extends Component {
                   await new Promise(r => setTimeout(r, 100));
                   used[i] = true;
                   user_used[i] = true;
+                } else {
+                  failed = true;
                 }
+              }
+
+              if (!failed) {
+                this.props.dispatch({type:23, wonGame:true});
               }
 
               // now search for yellow & black.
@@ -212,13 +217,11 @@ class MainBody extends Component {
                     this.props.dispatch({type:12, yellowWords:words[i]});
                     await new Promise(r => setTimeout(r, 100));
                     used[found_wordpos] = true;
-                    failed = true;
                     user_used[i] = true;
                   } else {
                     this.props.dispatch({type:8, colour:"B",positionchange:i});
                     this.props.dispatch({type:11,badWords:words[i]});
                     await new Promise(r => setTimeout(r, 100));
-                    failed = true;
                     user_used[i] = true;
                   }
                 }
@@ -228,11 +231,14 @@ class MainBody extends Component {
                 this.setState({
                   gameEnded:true
                 })
-              }
+              } else if (wordpos == 4) {
+                this.props.dispatch({type:22, failedGame:true});
+              } 
               
               this.props.dispatch({type:wordpos,word:words});
 
               this.updateGuess();
+              
             } else {
               this.setState({
                 gameEnded:true
