@@ -14,8 +14,3 @@ It uses react-redux to create a store, which is then updated by the input boxes.
 After 5 letters are stored, and the user clicks enter, it checks with a dictionary API to make sure that the input is a word, then changes the colours on the page according to wordle's rules.
 
 <br/>
-
-## Things in progress: <br/>
-
-* Add a keyboard at the bottom to indicate which characters were inputted by the user.<br/>
-* Rework it from an input text box to divs, and listen for user input<br/>
