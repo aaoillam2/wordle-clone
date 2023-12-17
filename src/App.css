@@ -115,3 +115,20 @@
   font-size:36px;
   background-color:rgba(0,0,0,0.6);
 }
+
+.addword {
+  animation-name: Pop;
+  animation-duration:100ms;
+}
+
+@keyframes Pop {
+  from {
+    transform: scale(0.8);
+    opacity:0;
+  }
+
+  40% {
+    transform:scale(1.1);
+    opacity:1;
+  }
+}
